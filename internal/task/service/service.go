@@ -7,37 +7,37 @@ import (
 )
 
 type TaskModel struct {
-	ID             int
-	Title          string
-	Description    string
-	CreationTime   time.Time
-	CompletionTime *time.Time
+	ID          int
+	Title       string
+	Description string
+	CreatedAt   time.Time
+	CompletedAt *time.Time
 }
 
 type ServiceInterface interface {
 	CreateTask(ctx context.Context, m TaskModel) (TaskModel, error)
-	GetTasks(ctx context.Context) ([]TaskModel, error)
-	CompleteTask(ctx context.Context, id int) (TaskModel, error)
-	DeleteTask(ctx context.Context, id int) error
+	// GetTasks(ctx context.Context) ([]TaskModel, error)
+	// CompleteTask(ctx context.Context, id int) (TaskModel, error)
+	// DeleteTask(ctx context.Context, id int) error
 }
 
 func ModeltoDomain(model TaskModel) repository.DomainTask {
 	return repository.DomainTask{
-		ID:             model.ID,
-		Title:          model.Title,
-		Description:    model.Description,
-		CreationTime:   model.CreationTime,
-		CompletionTime: model.CompletionTime,
+		ID:          model.ID,
+		Title:       model.Title,
+		Description: model.Description,
+		CreatedAt:   model.CreatedAt,
+		CompletedAt: model.CompletedAt,
 	}
 }
 
 func DomaintoModel(domain repository.DomainTask) TaskModel {
 	return TaskModel{
-		ID:             domain.ID,
-		Title:          domain.Title,
-		Description:    domain.Description,
-		CreationTime:   domain.CreationTime,
-		CompletionTime: domain.CompletionTime,
+		ID:          domain.ID,
+		Title:       domain.Title,
+		Description: domain.Description,
+		CreatedAt:   domain.CreatedAt,
+		CompletedAt: domain.CompletedAt,
 	}
 }
 

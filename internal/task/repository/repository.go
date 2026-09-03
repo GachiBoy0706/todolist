@@ -8,18 +8,18 @@ import (
 )
 
 type DomainTask struct {
-	ID             int
-	Title          string
-	Description    string
-	CreationTime   time.Time
-	CompletionTime *time.Time
+	ID          int
+	Title       string
+	Description string
+	CreatedAt   time.Time
+	CompletedAt *time.Time
 }
 
 type ResopitoryInterface interface {
 	CreateTask(ctx context.Context, task DomainTask) (DomainTask, error)
-	GetTasks(ctx context.Context) ([]DomainTask, error)
-	CompleteTask(ctx context.Context, id int) (DomainTask, error)
-	DeleteTask(ctx context.Context, id int) error
+	// GetTasks(ctx context.Context) ([]DomainTask, error)
+	// CompleteTask(ctx context.Context, id int) (DomainTask, error)
+	// DeleteTask(ctx context.Context, id int) error
 }
 
 type Repo struct {
@@ -33,11 +33,11 @@ func NewRepo(pool *pgxpool.Pool) *Repo {
 func (r *Repo) CreateTask(ctx context.Context, task DomainTask) (DomainTask, error) {
 	query := `INSERT INTO tasks (title, description) 
 	VALUES ($1, $2) 
-	RETURNING id, title, description, created_at, completion_time`
+	RETURNING id, title, description, created_at, completed_at`
 
 	row := r.pool.QueryRow(ctx, query, task.Title, task.Description)
 	var taskReturned DomainTask
-	err := row.Scan(&taskReturned.ID, &taskReturned.Title, &taskReturned.Description, &taskReturned.CreationTime, &taskReturned.CompletionTime)
+	err := row.Scan(&taskReturned.ID, &taskReturned.Title, &taskReturned.Description, &taskReturned.CreatedAt, &taskReturned.CompletedAt)
 	if err != nil {
 		return DomainTask{}, err
 	}

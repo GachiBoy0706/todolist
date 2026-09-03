@@ -1,11 +1,15 @@
 package main
 
 import (
+	"ToDoList/internal/core/tools"
 	"context"
 	"fmt"
+	"log"
+	"net/http"
 	"os"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -33,4 +37,11 @@ func main() {
 		return
 	}
 	fmt.Println("all good")
+
+	router := mux.NewRouter()
+	tools.Init(router, pool)
+
+	if err := http.ListenAndServe(":8080", router); err != nil {
+		log.Fatal(err)
+	}
 }

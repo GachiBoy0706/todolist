@@ -9,30 +9,30 @@ import (
 )
 
 type TaskDTO struct {
-	ID             int        `json:"id"`
-	Title          string     `json:"title"`
-	Description    string     `json:"description"`
-	CreationTime   time.Time  `json:"creation_time"`
-	CompletionTime *time.Time `json:"completion_time,omitempty"`
+	ID          int        `json:"id"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	CreatedAt   time.Time  `json:"created_at"`
+	CompletedAt *time.Time `json:"completed_at"`
 }
 
 func DTOtoModel(dto TaskDTO) service.TaskModel {
 	return service.TaskModel{
-		ID:             dto.ID,
-		Title:          dto.Title,
-		Description:    dto.Description,
-		CreationTime:   dto.CreationTime,
-		CompletionTime: dto.CompletionTime,
+		ID:          dto.ID,
+		Title:       dto.Title,
+		Description: dto.Description,
+		CreatedAt:   dto.CreatedAt,
+		CompletedAt: dto.CompletedAt,
 	}
 }
 
 func ModelToDTO(model service.TaskModel) TaskDTO {
 	return TaskDTO{
-		ID:             model.ID,
-		Title:          model.Title,
-		Description:    model.Description,
-		CreationTime:   model.CreationTime,
-		CompletionTime: model.CompletionTime,
+		ID:          model.ID,
+		Title:       model.Title,
+		Description: model.Description,
+		CreatedAt:   model.CreatedAt,
+		CompletedAt: model.CompletedAt,
 	}
 }
 
@@ -67,6 +67,7 @@ func writeError(w http.ResponseWriter, status int, err string) {
 }
 
 func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("in create handler")
 	if r.Method != "POST" {
 		writeResponse(w, http.StatusMethodNotAllowed, nil)
 		return
